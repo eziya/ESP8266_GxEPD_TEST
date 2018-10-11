@@ -2,7 +2,7 @@
 //This is a automatic generated file
 //Please do not modify this file
 //If you touch this file your change will be overwritten during the next build
-//This file has been generated on 2018-10-10 22:07:06
+//This file has been generated on 2018-10-11 20:14:33
 
 #include "Arduino.h"
 #include "Arduino.h"
@@ -21,9 +21,9 @@
 void setup() ;
 void loop() ;
 void showBitmapExample() ;
+void showBoat() ;
 void showFont(const char name[], const GFXfont* font) ;
 void drawCornerTest() ;
-void showBoat() ;
 void showBlackBoxCallback(uint32_t v) ;
 void showValueBoxCallback(const uint32_t v) ;
 void showPartialUpdatePaged() ;

@@ -8306,7 +8306,7 @@ LOAD D:\Workspace\Arduino\ESP8266_GxEPD_TEST/Release/arduino.ar
                 0x40202b14                showPartialUpdatePaged()
  *fill*         0x40202bc5        0x3 
  .text.loop     0x40202bc8       0x6c .\sloeber.ino.cpp.o
-                                 0xb4 (size before relaxing)
+                                 0xb0 (size before relaxing)
                 0x40202bec                loop
  .text._ZN8SPIClass11setDataBitsEt$isra$0
                 0x40202c34       0x2e .\libraries\SPI\SPI.cpp.o

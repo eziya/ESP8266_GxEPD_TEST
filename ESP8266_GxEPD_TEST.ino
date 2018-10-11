@@ -46,7 +46,7 @@ void loop()
 	showFont("DSDIGIT30pt7b", &DSDIGIT30pt7b);
 	showPartialUpdatePaged();
 
-	delay(10000);
+	delay(1000);
 }
 
 /* Bitmap 그리기 예제 */
@@ -55,8 +55,8 @@ void showBitmapExample()
 	/* 버퍼를 흰색으로 Clear */
 	display.fillScreen(GxEPD_WHITE);
 
-	/* Bitmap 그리기, bm_default 사용시 0xFF 가 흰색, bm_normal 사용시 0xFF 가 검은색 */
-	display.drawBitmap(BitmapExample1, 0, 0, GxEPD_WIDTH, GxEPD_HEIGHT, GxEPD_BLACK, GxEPD::bm_default);
+	/* Bitmap 그리기, bm_invert 사용시 0xFF 가 흰색, bm_normal 사용시 0xFF 가 검은색 */
+	display.drawBitmap(BitmapExample1, 0, 0, GxEPD_WIDTH, GxEPD_HEIGHT, GxEPD_BLACK, GxEPD::bm_invert | GxEPD::bm_flip_x);
 
 	/* Display 출력 */
 	display.update();
@@ -65,6 +65,47 @@ void showBitmapExample()
 
 	/* Boat 이미지 출력 */
 	showBoat();
+}
+
+/* Bitmap 그리기 및 이동 예제 */
+void showBoat()
+{
+	/* 위치 X, Y 값 설정 */
+	uint16_t x = (display.width() - 64) / 2;
+	uint16_t y = 5;
+
+	/* Display Clear */
+	display.fillScreen(GxEPD_WHITE);
+
+	/* Bitmap 그리기 */
+	display.drawBitmap(gImage_Boat, x, y, 64, 180, GxEPD_BLACK, GxEPD::bm_invert | GxEPD::bm_flip_x);
+	display.update();
+	delay(500);
+
+	/* bm_invert: 색상반전, bm_flip_x: x축 회전, bm_flip_y: y 축 회전 */
+	uint16_t forward = GxEPD::bm_invert | GxEPD::bm_flip_x;
+	uint16_t reverse = GxEPD::bm_invert | GxEPD::bm_flip_x | GxEPD::bm_flip_y;
+
+	/* Y축을 기준으로 그림의 위치를 변경하며 Bitmap 그리기 */
+	for (; y + 180 + 5 <= display.height(); y += 5)
+	{
+		display.fillScreen(GxEPD_WHITE);
+		display.drawBitmap(gImage_Boat, x, y, 64, 180, GxEPD_BLACK, forward);
+		display.updateWindow(0, 0, display.width(), display.height());
+		delay(500);
+	}
+
+	delay(1000);
+	for (; y >= 5; y -= 5)
+	{
+		display.fillScreen(GxEPD_WHITE);
+		display.drawBitmap(gImage_Boat, x, y, 64, 180, GxEPD_BLACK, reverse);
+		display.updateWindow(0, 0, display.width(), display.height());
+		delay(1000);
+	}
+
+	display.update();
+	delay(1000);
 }
 
 /* 선택한 폰트를 출력하는 예제 */
@@ -123,48 +164,6 @@ void drawCornerTest()
 
 	/* Rotation 값 복구 */
 	display.setRotation(rotation);
-}
-
-/* Bitmap 그리기 및 이동 예제 */
-void showBoat()
-{
-	/* 위치 X, Y 값 설정 */
-	uint16_t x = (display.width() - 64) / 2;
-	uint16_t y = 5;
-
-	/* Display Clear */
-	display.fillScreen(GxEPD_WHITE);
-
-	/* Bitmap 그리기 */
-	display.drawBitmap(gImage_Boat, x, y, 64, 180, GxEPD_BLACK, GxEPD::bm_default);
-	display.update();
-	delay(500);
-
-	/* bm_invert: 색상반전, bm_flip_x: x축 회전, bm_flip_y: y 축 회전 */
-	/* bm_invert 를 사용하지 않고 그린 영역 위에 다시 그림을 그리는 경우 색상이 반전됨 */
-	uint16_t forward = GxEPD::bm_invert | GxEPD::bm_flip_x;
-	uint16_t reverse = GxEPD::bm_invert | GxEPD::bm_flip_x | GxEPD::bm_flip_y;
-
-	/* Y축을 기준으로 그림의 위치를 변경하며 Bitmap 그리기 */
-	for (; y + 180 + 5 <= display.height(); y += 5)
-	{
-		display.fillScreen(GxEPD_WHITE);
-		display.drawBitmap(gImage_Boat, x, y, 64, 180, GxEPD_BLACK, forward);
-		display.updateWindow(0, 0, display.width(), display.height());
-		delay(500);
-	}
-
-	delay(1000);
-	for (; y >= 5; y -= 5)
-	{
-		display.fillScreen(GxEPD_WHITE);
-		display.drawBitmap(gImage_Boat, x, y, 64, 180, GxEPD_BLACK, reverse);
-		display.updateWindow(0, 0, display.width(), display.height());
-		delay(1000);
-	}
-
-	display.update();
-	delay(1000);
 }
 
 /* drawPagedToWindow 의 Callback 함수로 호출되며, v 값에 따라서 상자를 검은색 또는 흰색으로 채우는 함수 */
